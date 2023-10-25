@@ -1,25 +1,138 @@
 1、什么是Three.js？了解吗？
+Three.js 是一个基于 WebGL 的 JavaScript 3D 渲染库，在浏览器中利用GPU实现高效的3D图形渲染, 用于创建和渲染交互式的三维图形应用程序，如游戏、模拟和可视化。
 
 2、什么是WebGL？
+WebGL是一种基于OpenGL ES 2.0标准的Web图形库，它允许开发者在Web浏览器中利用GPU来进行高效的3D图形渲染。WebGL使用JavaScript API与GPU进行交互，并支持硬件加速的图形计算，可以实现流畅和高性能的3D图形效果。WebGL可以在所有现代的Web浏览器中运行，包括Google Chrome、Firefox、Safari和Microsoft Edge等。WebGL通常与其他Web技术一起使用，如HTML、CSS和JavaScript，可以为Web应用程序、游戏、可视化和数据可视化等领域提供强大的图形功能和高级用户体验。
 
 3、有了WebGL，为什么还需要Three.js？
+虽然WebGL可以帮助开发者在Web浏览器中实现高效的3D图形渲染，但它是一个底层的图形API，需要开发者编写大量的代码来实现各种功能和效果，例如场景、相机、灯光、材质、几何体、动画和渲染等。这对于缺乏3D图形编程经验的开发者来说可能是一项挑战。
+
+而Three.js提供了一个高级的3D图形库，它封装了许多底层的WebGL API，提供了更加简单易用的API和工具，使开发者可以更快速地创建和呈现3D视觉效果，同时也能够更加专注于设计和交互方面的工作。 Three.js还提供了丰富的文档和示例，便于开发者学习和使用。
+
+因此，虽然WebGL可以为开发者提供底层的3D图形渲染功能，但使用Three.js可以使开发者更加高效地创建和呈现出更具交互性和视觉吸引力的3D场景。
 
 4、在three.js中，如何获得与某Face3相邻的三个面？
+获取Face3所在的几何体（Geometry或BufferGeometry）对象。
 
-5、用three.js实现下图中的demo
+遍历几何体的所有面（Face3或Face4），并找到与目标Face3共享两个顶点的面。
+
+将找到的面存储到一个数组中，最终得到与目标Face3相邻的三个面。
+
+5、如何创建一个简单的 Three.js 场景？
+创建场景、相机和渲染器，然后将相机添加到场景中。创建几何体和材质，将它们组合成网格，然后将网格添加到场景中。最后，使用渲染器将场景渲染到画布上。
 
 6、什么是Canvas？
+Canvas是HTML5中新增的一个2D绘图API，它允许开发者在Web页面中使用JavaScript绘制图形、动画和其他视觉效果。Canvas提供了一个可编程的绘图区域（画布），开发者可以通过JavaScript脚本控制画布中的像素，实现各种复杂的图形和动画效果。
 
 7、说说three.js有哪些主要组件
+Three.js 架构包括场景（Scene）、相机（Camera）、渲染器（Renderer）、材质（Material）和几何体（Geometry）。这些组件协同工作以创建和渲染三维场景。
 
 8、常用相机有哪些？并作简单介绍
+PerspectiveCamera（透视相机）：透视相机是一种模拟人眼观察场景的相机，可以产生透视效果。它具有视角、宽高比、近平面和远平面等参数，可以通过这些参数控制透视效果的大小和范围。
+
+OrthographicCamera（正交相机）：正交相机是一种不具有透视效果的相机，可以产生平面效果。它具有左、右、上、下、近平面和远平面等参数，可以通过这些参数控制正交效果的大小和范围。
+
+CubeCamera（立方体相机）：立方体相机是一种可以同时渲染六个方向的相机，用于创建立方体贴图或反射/折射效果。
+
+ArrayCamera（数组相机）：数组相机是一种可以同时渲染多个相机的相机，用于创建多视角的场景或立体效果
+这些相机具有不同的特点和用途，可以根据具体的需求选择相应的相机。例如，透视相机用于模拟真实的透视效果，适用于大多数的3D场景；正交相机用于制作平面效果或特殊的3D场景；立方体相机用于创建立方体贴图或反射/折射效果；数组相机用于创建多视角的场景或立体效果。
 
 9、编写场景、几何体、相机、渲染器互相交互的示例js代码
+```
+// 创建场景
+var scene = new THREE.Scene();
+
+// 创建几何体
+var geometry = new THREE.BoxGeometry(1, 1, 1);
+var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+var mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+// 创建相机
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 5;
+
+// 创建渲染器
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// 渲染循环
+function render() {
+  requestAnimationFrame(render);
+
+  // 使几何体旋转
+  mesh.rotation.x += 0.01;
+  mesh.rotation.y += 0.01;
+
+  renderer.render(scene, camera);
+}
+render();
+```
 
 10、说说Three.js的应用场景
+互动游戏和娱乐：Three.js可以用于开发各种类型的3D游戏和互动娱乐应用程序，如角色扮演游戏、赛车游戏、射击游戏、3D动画和虚拟现实应用等。
+
+数据可视化：Three.js可以用于创建各种复杂的数据可视化效果，如3D地图、3D图表、3D模型的可视化等，这些效果可以帮助用户更好地理解和分析数据。
+
+建筑和室内设计：Three.js可以用于构建各种类型的建筑和室内场景模型，并提供交互式的漫游和导航功能，使用户可以更好地了解和体验设计方案。
+
+广告和营销：Three.js可以用于创建各种类型的3D广告和营销应用程序，如产品展示、虚拟试衣间、虚拟购物场景等，可以为商家提供更加生动、直观的产品展示效果。
+
+教育和培训：Three.js可以用于创建各种类型的教育和培训应用程序，如虚拟实验室、虚拟场景漫游、3D模型的交互式展示等，可以为学生提供更加直观、生动的学习体验。
 
 11、坐标系是怎么运用到场景去的？
+在Three.js中，坐标系是非常重要的概念，因为所有的3D场景都是基于一个三维坐标系来构建的。在Three.js中，坐标系由三个轴组成：X轴、Y轴和Z轴。X轴指向右侧，Y轴指向上方，Z轴指向屏幕外方向。
+
+在场景中，每个对象都有一个位置和一个方向，这些属性都是基于坐标系来定义的。例如，一个立方体的位置可以由x、y和z坐标表示，而它的方向可以由一个角度或三个欧拉角表示。可以使用Three.js提供的Vector3和Euler对象来表示和操作这些属性。
+
+在将对象添加到场景中时，需要将其放置在正确的位置和方向上。例如，如果想要将一个立方体放置在场景的中心，则需要将其位置设置为(0,0,0)。如果想要让立方体朝向屏幕外方向，则需要将其方向设置为(0,0,0)，表示不进行旋转。
+
+在渲染场景时，Three.js会将所有的对象转换为屏幕上的像素，并使用透视投影将它们投影到屏幕上。在这个过程中，坐标系的转换和变换都是非常重要的，因为它们决定了每个对象在屏幕上的位置和方向。因此，在使用Three.js创建3D场景时，需要了解和掌握坐标系的概念和使用方法。
 
 12、用three.js实现环境贴图，写出核心代码即可
+Three.js中实现环境贴图可以通过CubeTexture和Mesh的Material实现。以下是实现环境贴图的核心代码：
+上述代码首先使用CubeTextureLoader加载六张纹理图片，创建一个CubeTexture对象来表示环境贴图。然后，创建一个Mesh的Material，将环境贴图赋值给envMap属性，并设置金属度和粗糙度。最后，使用BoxGeometry创建一个立方体，将Material和Geometry传递给Mesh创建一个Mesh对象，并将其添加到场景中。
+```
+// 创建CubeTexture
+const cubeTexture = new THREE.CubeTextureLoader().load([
+  'posx.jpg', 'negx.jpg',
+  'posy.jpg', 'negy.jpg',
+  'posz.jpg', 'negz.jpg'
+]);
+cubeTexture.encoding = THREE.sRGBEncoding;
+
+// 创建Mesh的Material
+const material = new THREE.MeshStandardMaterial({
+  envMap: cubeTexture,
+  metalness: 1.0, // 金属度
+  roughness: 0.0 // 粗糙度
+});
+
+// 创建Mesh
+const geometry = new THREE.BoxGeometry();
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+```
 
 13、用three.js写出实现凹凸纹理贴图的示例代码
+在Three.js中实现凹凸纹理贴图可以使用Mesh的NormalMap和BumpMap属性。以下是一个简单的示例代码：
+上述代码首先使用TextureLoader加载纹理图片和凹凸纹理图片，并创建一个MeshStandardMaterial，将纹理图片赋值给map属性，将凹凸纹理图片赋值给bumpMap属性，并设置凹凸强度。然后，使用BoxGeometry创建一个立方体，将Material和Geometry传递给Mesh创建一个Mesh对象，并将其添加到场景中。
+```
+// 加载纹理图片和凹凸纹理图片
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load('texture.jpg');
+const bumpMap = textureLoader.load('bumpMap.jpg');
+
+// 创建Mesh的Material
+const material = new THREE.MeshStandardMaterial({
+  map: texture,
+  bumpMap: bumpMap, // 凹凸纹理贴图
+  bumpScale: 0.1 // 凹凸强度
+});
+
+// 创建Mesh
+const geometry = new THREE.BoxGeometry();
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+```
